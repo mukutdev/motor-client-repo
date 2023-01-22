@@ -26,7 +26,7 @@ const AllSellers = () => {
   });
 
   const verifySeller = (email , sellerName)=>{
-    console.log(email);
+    // console.log(email);
 
     fetch(`http://localhost:5000/sellers/verified-seller` , {
       method: 'PUT',
@@ -37,9 +37,9 @@ const AllSellers = () => {
     })
     .then(res => res.json())
         .then(data => {
-          console.log(data);
+          // console.log(data);
             if(data.modifiedCount){
-                console.log(data);
+                // console.log(data);
                 toast.success(`${sellerName} Is Now Verified Seller`)
                 refetch()
             }

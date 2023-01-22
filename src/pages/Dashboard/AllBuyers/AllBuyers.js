@@ -25,18 +25,18 @@ const AllBuyers = () => {
   });
 
   const deletebuyer = id => {
-    console.log(id);
+    // console.log(id);
     fetch(`http://localhost:5000/buyers/${id}`, {
       method: "DELETE",
     })
       .then(res => res.json())
       .then(data => {
         if(data.deletedCount) {
-          console.log(data);
+          // console.log(data);
           toast.success("Buyer Deleted successfully");
           refetch();
         }
-        console.log(data);
+        // console.log(data);
       })
       .catch(err => console.log(err));
   };
