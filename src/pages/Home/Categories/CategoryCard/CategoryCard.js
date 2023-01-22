@@ -8,10 +8,10 @@ const CategoryCard = ({ category }) => {
       <div className="shadow-md rounded py-6">
         <img className="h-60 object-fill" src={catImg} alt="" />
         <div className="flex justify-between gap-5 px-5 md:px-10 items-center mt-7">
-          <h3 className="text-2xl font-bold">{name}</h3>
+          <h3 className="text-xl font-bold">{name}</h3>
           <Link
             to={`/category/${catId}`}
-            className="btn bg-yellow-400 hover:text-white border-0 text-lg text-slate-900"
+            className="btn bg-yellow-400 hover:text-white border-0 text-base rounded text-slate-900"
           >
             See All Cars
           </Link>

@@ -40,11 +40,14 @@ const AuthConText = ({ children }) => {
     return signInWithPopup(auth, googleProvider);
   };
 
-  //useLogout function
+  //use Logout function
 
   const handleUserLogout = () => {
     signOut(auth)
-      .then(() => {})
+    
+      .then(() => {
+        localStorage.removeItem("resaleToken")
+      })
       .catch(err => console.log(err));
   };
 

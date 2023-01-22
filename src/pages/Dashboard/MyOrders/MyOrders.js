@@ -43,19 +43,19 @@ const MyOrders = () => {
       {bookings?.length > 0 ? (
         <>
           {" "}
-          <h2 className="text-2xl font-semibold">
-            You Have {bookings.length} Order
+          <h2 className="text-xl font-semibold">
+            You Have {bookings.length} Bookings
           </h2>
           <div className="my-10">
             {bookings.length > 0 && (
               <table className="table w-full">
                 <thead>
                   <tr>
-                    <th className="text-xl font-medium">Sl</th>
-                    <th className="text-xl font-medium">Car</th>
-                    <th className="text-xl font-medium">Name</th>
-                    <th className="text-xl font-medium">Price</th>
-                    <th className="text-xl font-medium">Payment</th>
+                    <th className="text-lg font-medium">Sl</th>
+                    <th className="text-lg font-medium">Car</th>
+                    <th className="text-lg font-medium">Name</th>
+                    <th className="text-lg font-medium">Price</th>
+                    <th className="text-lg font-medium">Payment</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -75,10 +75,10 @@ const MyOrders = () => {
                             </div>
                           </div>
                         </td>
-                        <td className="font-semibold text-xl">
+                        <td className="font-medium text-lg">
                           {booking.carName}
                         </td>
-                        <td className="font-semibold text-xl">
+                        <td className="font-medium text-lg">
                           {" "}
                           ${booking.salePrice}
                         </td>
@@ -93,11 +93,11 @@ const MyOrders = () => {
                 </tbody>
                 <tfoot>
                   <tr>
-                    <th className="text-xl font-medium">Sl</th>
-                    <th className="text-xl font-medium">Car</th>
-                    <th className="text-xl font-medium">Name</th>
-                    <th className="text-xl font-medium">Price</th>
-                    <th className="text-xl font-medium">Payment</th>
+                    <th className="text-lg font-medium">Sl</th>
+                    <th className="text-lg font-medium">Car</th>
+                    <th className="text-lg font-medium">Name</th>
+                    <th className="text-lg font-medium">Price</th>
+                    <th className="text-lg font-medium">Payment</th>
                   </tr>
                 </tfoot>
               </table>

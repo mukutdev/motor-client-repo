@@ -1,15 +1,13 @@
-import React, { useContext } from "react";
+
 import toast from "react-hot-toast";
 import { BsTrash } from "react-icons/bs";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
-import { AuthProvider } from "../../../context/AuthConText";
-import swal from 'sweetalert';
+import Loader from "../../../shared/Loader/Loader";
 
 
 const AllSellers = () => {
 
-    const {user} = useContext(AuthProvider)
   const {
     data: sellers = [],
     isLoading,
@@ -18,26 +16,31 @@ const AllSellers = () => {
     queryKey: ["sellers"],
     queryFn: async () => {
       const res = await fetch(`${process.env.REACT_APP_url}/sellers`,{
-        headers :{
-            authorization: `bearer ${localStorage.getItem('resaleToken')}`
-        }
+        // headers :{
+        //     authorization: `bearer ${localStorage.getItem('resaleToken')}`
+        // }
       });
       const data = res.json();
       return data;
     },
   });
 
-  const verifySeller = id=>{
-        fetch(`${process.env.REACT_APP_url}/sellers/verified/${id}`,{
-            method : 'PUT',
-            headers :{
-                authorization : `bearer ${localStorage.getItem('resaleToken')}`
-            }
-        })
-        .then(res => res.json())
+  const verifySeller = (email , sellerName)=>{
+    console.log(email);
+
+    fetch(`http://localhost:5000/sellers/verified-seller` , {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email: email })
+    })
+    .then(res => res.json())
         .then(data => {
+          console.log(data);
             if(data.modifiedCount){
-                toast.success(`${user?.displayName} Is Now Verified Seller`)
+                console.log(data);
+                toast.success(`${sellerName} Is Now Verified Seller`)
                 refetch()
             }
         })
@@ -58,6 +61,12 @@ const AllSellers = () => {
     })
     console.log(id);
   }
+
+
+  if(isLoading){
+    return <Loader/>
+  }
+
 
   return (
     <section className="mt-10 md:mx-16 mx-2">
@@ -85,9 +94,9 @@ const AllSellers = () => {
                       <th>{i + 1}</th>
                       <td className="font-semibold text-xl">{seller.name}</td>
                       <td className="font-semibold text-xl">{seller.email}</td>
-                      <td className="font-semibold text-xl" onClick={()=> verifySeller(seller._id)}>
+                      <td className="font-semibold text-xl" onClick={()=> verifySeller(seller.email , seller.name)}>
                        {
-                        seller?.verified ? <button className="btn btn-primary border-0 rounded-sm text-slate-700 bg-yellow-400 hover:bg-yellow-400 btn-xs text-slate-600">Verified</button> : <button className="btn bg-indigo-600 hover:bg-yellow-400  btn-xs text-white rounded-sm border-none">Verify</button>
+                        seller?.verified ? <button className="btn btn-primary border-0 rounded-sm  bg-yellow-400 hover:bg-yellow-400 btn-xs text-slate-600">Verified</button> : <button className="btn bg-indigo-600 hover:bg-yellow-400  btn-xs text-white rounded-sm border-none">Verify</button>
                        }
                       </td>
                       <td>

@@ -5,16 +5,17 @@ import { useAdmin } from "../../../Hooks/useAdmin";
 import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import toast from "react-hot-toast";
+import SmallSpinner from "../../../shared/SmallSpinner/SmallSpinner";
 
 const MyProduct = () => {
   const { user } = useContext(AuthProvider);
   const [userLevel] = useAdmin(user?.email);
   const navigate = useNavigate();
 
-  const { data: products = [] , refetch } = useQuery({
+  const { data: products = [] , isLoading, refetch } = useQuery({
     queryKey: ["allCars", user?.email],
     queryFn: async () => {
-      const res = await fetch(`${process.env.REACT_APP_url}/allCars?email=${user?.email}`, {
+      const res = await fetch(`http://localhost:5000/allCars?email=${user?.email}`, {
         headers: {
           authorization: `bearer ${localStorage.getItem("resaleToken")}`,
         },
@@ -24,26 +25,14 @@ const MyProduct = () => {
     },
   });
 
-  const makeAdvertise = (id , carName) => {
-    console.log(id);
-        fetch(`${process.env.REACT_APP_url}/allCars/advertise/${id}`,{
-            method: 'PUT',
-            headers :{
-                authorization : `bearer ${localStorage.getItem('resaleToken')}`
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            if(data.modifiedCount > 0){
-                toast.success(`Congratulations ${carName} is now advertised item`)
-                refetch()
-            }
-            
-        })
-        .catch(err => console.log(err))
+  if(isLoading){
+    return <SmallSpinner/>
+  }
 
-        
-  };
+
+  console.log(products);
+
+
 
 //   useEffect(() => {
 //     axios
@@ -82,6 +71,30 @@ const MyProduct = () => {
     })
     console.log(id);
   }
+
+
+  // make advertise function
+
+  const makeAdvertise = (id , carName) => {
+    console.log(id); 
+    fetch(`http://localhost:5000/allCars/advertise/${id}`,{
+            method: 'PUT',
+            headers :{
+              'content-type' : 'application/json'
+                // authorization : `bearer ${localStorage.getItem('resaleToken')}`
+            },
+   
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.modifiedCount > 0){
+                toast.success(`Congratulations ${carName} is now advertised item`)
+                refetch()
+            }
+            
+        })
+        .catch(err => console.log(err))
+  };
 
   return (
     <section className="mt-10 md:mx-16 mx-2">
@@ -136,7 +149,7 @@ const MyProduct = () => {
                         </button>
                         {product?.Availability === "available" && (
                           <button
-                            onClick={() => makeAdvertise(product._id , product?.carName)}
+                            onClick={() => makeAdvertise(product?._id , product?.carName)}
                             className={`btn border-0  rounded-sm  btn-xs mx-2 ${product?.advertised ? "bg-orange-600" : "btn-primary"}`}
                           >
                            {product?.advertised ? "Featured" : "Advertise"}

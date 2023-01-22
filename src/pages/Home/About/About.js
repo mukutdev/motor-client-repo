@@ -34,9 +34,9 @@ const About = () => {
     <section className="my-14 container mx-auto">
       <div className="md:flex justify-between md:w-5/6 mx-auto items-center">
         <div className="md:w-1/2 md:px-0 px-4">
-          <h2 className="text-3xl font-bold">ABOUT COMPANY</h2>
+          <h2 className="text-2xl font-bold">ABOUT COMPANY</h2>
           <div className="h-2 w-14 mt-2 bg-slate-800"></div>
-          <p className="text-xl my-10">
+          <p className="text-base my-10">
             Welcome To Motor Motor is a Professional Car Seller Platform. Here
             we will provide you only interesting content, which you will like
             very much. We're dedicated to providing you the best of Car Seller,
@@ -56,8 +56,8 @@ const About = () => {
                       {company.icon}
                     </div>
                     <div className="h-24 w-2/3">
-                      <h2 className="text-2xl font-bold">{company.name}</h2>
-                      <p className="pt-2 text-lg">{company.des}</p>
+                      <h2 className="text-lg font-bold">{company.name}</h2>
+                      <p className="pt-2 text-base">{company.des}</p>
                     </div>
                   </div>
                 );

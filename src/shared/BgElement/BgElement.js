@@ -7,7 +7,7 @@ const BgElement = ({content}) => {
         style={{ backgroundImage: `url(https://i.ibb.co/M9dJrZC/category-bg.jpg)` }}
         className="md:h-96 h-64 bg-cover flex items-center justify-center"
       >
-        <h2 className="md:text-4xl text-2xl uppercase tracking-widest text-center text-white font-semibold">
+        <h2 className="text-3xl uppercase tracking-widest text-center text-white font-semibold">
           {content}
         </h2>
       </div>

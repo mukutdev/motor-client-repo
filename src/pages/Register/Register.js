@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthProvider } from "../../context/AuthConText";
 import { useToken } from "../../Hooks/useToken";
+import SmallSpinner from "../../shared/SmallSpinner/SmallSpinner";
 
 const Register = () => {
 
@@ -13,6 +14,7 @@ const Register = () => {
     const [createdEmail , setCreatedEmail] = useState('')
     const [token] = useToken(createdEmail)
     const [errorMessage , setErrorMessage] = useState('')
+    const [loading , setLoading] = useState(false)
 
 
     if(token){
@@ -20,44 +22,46 @@ const Register = () => {
     }
 
     const handleUserSubmit = data =>{
-        console.log(data);
+
+        setLoading(true)
 
         //email password based account creation
 
         handleCreateUser(data.email , data.password)
         .then(result =>{
-          const user = result.user
           const userInfo = {
             displayName : data.name
           }
-          toast.success('Your account has been created')
           // updateProfile 
            handleUpdateProfile(userInfo)
            .then(()=>{
             saveUserToDb(data.name , data.email , data.accountMode)
+            toast.success('Your account has been created')
+            // navigate('/')
            })
            .catch(err => console.log(err))
-
-          console.log(user);
         })
         .catch(err => {
           setErrorMessage(err.message)
+          setLoading(false)
         })
     }
 
     const saveUserToDb = (name , email , accountMode )=>{
       const user = {name , email , accountMode , verified : false}
-      fetch(`${process.env.REACT_APP_url}/users/${email}`, {
+      fetch(`http://localhost:5000/users/${email}`, {
         method : 'PUT',
         headers : { 'Content-Type': 'application/json'},
         body: JSON.stringify(user)
       })
       .then(res => res.json())
       .then(data =>{
-        console.log(data);
         setCreatedEmail(email)
+        setLoading(false)
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        setLoading(false)
+      })
     }
 
 
@@ -82,7 +86,7 @@ const Register = () => {
             className="mt-3"
             alt=""
           />
-          <p className="text-center text-xl font-medium mt-2">
+          <p className="text-center text-lg font-medium mt-2">
             Enter your Details Here
           </p>
           <form onSubmit={handleSubmit(handleUserSubmit)}>
@@ -108,9 +112,9 @@ const Register = () => {
             />
             {errors.password && <span className="text-red-500">Please enter a strong password</span>}
             <div className="mt-3">
-                <p className="text-lg font-medium">Which type of Account You want to create?</p>
+                <p className="text-base font-medium">Which type of Account You want to create?</p>
               <label className="label cursor-pointer">
-                <span className="text-lg font-medium">Seller</span>
+                <span className="text-base font-medium">Seller</span>
                 <input
                   type="radio"
                   name="radio-10"
@@ -121,7 +125,7 @@ const Register = () => {
                 />
               </label>
               <label className="label cursor-pointer">
-                <span className="text-lg font-medium">Buyer</span>
+                <span className="text-base font-medium">Buyer</span>
                 <input
                   type="radio"
                   name="radio-10"
@@ -133,11 +137,13 @@ const Register = () => {
               </label>
             </div>
              
-             <input type="submit" value="Create Your Account"  className="w-full bg-yellow-400 hover:bg-yellow-500 cursor-pointer py-3 mt-4 font-semibold text-xl"/>
+            {
+              loading ? <SmallSpinner/> :  <input type="submit" value="Create Your Account"  className="w-full bg-yellow-400 hover:bg-yellow-500 cursor-pointer py-3 mt-4 font-semibold text-lg rounded"/>
+            }
           </form>
            <p className="text-red-500 font-medium text-lg my-3">{errorMessage}</p>
           <div className="mt-4">
-             <p className="font-medium">Already have an account ? <Link to={'/login'} className="underline text-lg font-semibold"> Login Now !</Link></p>
+             <p className="font-medium text-base">Already have an account ? <Link to={'/login'} className="underline text-base font-semibold"> Login Now !</Link></p>
           </div>
         </div>
       </div>

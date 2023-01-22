@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider } from '../../context/AuthConText';
-import Spinner from '../../shared/Spinner/Spinner';
+import Loader from '../../shared/Loader/Loader';
 
 const PrivateRoute = ({children}) => {
 
@@ -9,7 +9,7 @@ const PrivateRoute = ({children}) => {
     const location = useLocation()
 
     if(loading){
-        return <Spinner></Spinner>
+        return <Loader></Loader>
     }
    if(user){
      return children;

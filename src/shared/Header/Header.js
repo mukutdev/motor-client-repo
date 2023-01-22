@@ -9,7 +9,7 @@ const Header = () => {
     <>
       <li>
         <Link
-          className="text-xl mx-2 rounded-lg font-medium  hover:bg-yellow-400 hover:text-white"
+          className="text-lg mx-2 rounded-lg font-medium  hover:bg-yellow-400 hover:text-white"
           to={"/"}
         >
           Home
@@ -17,7 +17,7 @@ const Header = () => {
       </li>
       <li>
         <Link
-          className="text-xl  mx-2 rounded-lg font-medium  hover:bg-yellow-400 hover:text-white"
+          className="text-lg  mx-2 rounded-lg font-medium  hover:bg-yellow-400 hover:text-white"
           to={"/blogs"}
         >
           Blogs
@@ -25,12 +25,12 @@ const Header = () => {
       </li>
      {
        user?.uid ? <>
-       <li><Link to={'/dashboard'} className="text-xl mx-2 rounded-lg font-medium">Dashboard</Link></li>
-        <li><Link className="text-xl mx-2 rounded-lg font-medium">Hello, {user?.displayName}</Link></li>
+       <li><Link to={'/dashboard'} className="text-lg mx-2 rounded-lg hover:text-white hover:bg-yellow-500 font-medium">Dashboard</Link></li>
+        <li><Link className="text-lg mx-2 rounded-lg font-medium">Hello, {user?.displayName}</Link></li>
          <button className="btn bg-yellow-400 hover:bg-yellow-500 text-black border-0" onClick={()=> handleUserLogout()}>Logout</button> 
        </> :  <li>
        <Link
-         className="text-xl mx-2 rounded-lg font-medium  hover:bg-yellow-400 hover:text-white"
+         className="text-lg mx-2 rounded-lg font-medium  hover:bg-yellow-400 hover:text-white"
          to={"/login"}
        >
          Login

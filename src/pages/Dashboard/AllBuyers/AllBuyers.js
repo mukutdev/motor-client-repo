@@ -14,10 +14,10 @@ const AllBuyers = () => {
   } = useQuery({
     queryKey: ["buyers"],
     queryFn: async () => {
-      const res = await fetch(`${process.env.REACT_APP_url}/buyers`, {
-        headers: {
-          authorization: `bearer ${localStorage.getItem("resaleToken")}`,
-        },
+      const res = await fetch(`http://localhost:5000/buyers`, {
+        // headers: {
+        //   authorization: `bearer ${localStorage.getItem("resaleToken")}`,
+        // },
       });
       const data = res.json();
       return data;
@@ -26,7 +26,7 @@ const AllBuyers = () => {
 
   const deletebuyer = id => {
     console.log(id);
-    fetch(`${process.env.REACT_APP_url}/buyers/${id}`, {
+    fetch(`http://localhost:5000/buyers/${id}`, {
       method: "DELETE",
     })
       .then(res => res.json())
@@ -46,17 +46,17 @@ const AllBuyers = () => {
       {buyers.length > 0 ? (
         <>
           {" "}
-          <h2 className="text-2xl font-semibold text-center">
+          <h2 className="text-xl font-semibold ">
             Total buyers {buyers.length}
           </h2>
           <div className="my-10">
             <table className="table w-full">
               <thead>
                 <tr>
-                  <th className="text-xl font-medium">Sl</th>
-                  <th className="text-xl font-medium">name</th>
-                  <th className="text-xl font-medium">email</th>
-                  <th className="text-xl font-medium">Action</th>
+                  <th className="text-lg font-medium">Sl</th>
+                  <th className="text-lg font-medium">name</th>
+                  <th className="text-lg font-medium">email</th>
+                  <th className="text-lg font-medium">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -64,8 +64,8 @@ const AllBuyers = () => {
                   return (
                     <tr key={buyer?._id}>
                       <th>{i + 1}</th>
-                      <td className="font-semibold text-xl">{buyer.name}</td>
-                      <td className="font-semibold text-xl">{buyer.email}</td>
+                      <td className="font-medium text-lg">{buyer.name}</td>
+                      <td className="font-medium text-lg">{buyer.email}</td>
                       <td>
                         <div
                           className="tooltip tooltip-right"
@@ -87,10 +87,10 @@ const AllBuyers = () => {
               </tbody>
               <tfoot>
                 <tr>
-                  <th className="text-xl font-medium">Sl</th>
-                  <th className="text-xl font-medium">Name</th>
-                  <th className="text-xl font-medium">Email</th>
-                  <th className="text-xl font-medium">Action</th>
+                  <th className="text-lg font-medium">Sl</th>
+                  <th className="text-lg font-medium">Name</th>
+                  <th className="text-lg font-medium">Email</th>
+                  <th className="text-lg font-medium">Action</th>
                 </tr>
               </tfoot>
             </table>

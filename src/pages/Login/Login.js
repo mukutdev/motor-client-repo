@@ -5,6 +5,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { AuthProvider } from '../../context/AuthConText';
 import toast from 'react-hot-toast';
 import { useToken } from '../../Hooks/useToken';
+import SmallSpinner from '../../shared/SmallSpinner/SmallSpinner';
 
 const Login = () => {
     const {register , handleSubmit , formState: { errors }} = useForm()
@@ -14,45 +15,53 @@ const Login = () => {
     const [createdEmail , setCreatedEmail] = useState('')
     const [token] = useToken(createdEmail)
     const [errorMessage , setErrorMessage] = useState('')
-
+    const [loading , setLoading] = useState(false)
+    const [googleLoading , setGoogleLoading] = useState(false)
     const from = location.state?.from?.pathname || '/'
 
     if(token){
       navigate(from , {replace : true})
     }
 
+      console.log(token);
     const handleUserSubmit = data =>{
+      setLoading(true)
         console.log(data);
 
         // email and password based login
         handleSignInWithEmailAndPassword(data.email, data.password)
         .then(result =>{
-          const user = result.user
-          toast.success('User logged in successfully')
+          toast.success('logged in successfully')
           setCreatedEmail(data.email)
-          console.log(user);
+          setLoading(false)
+          // navigate(from , {replace : true})
         })
         .catch(err => {
           setErrorMessage(err.message)
+          setLoading(false)
         })
     }
 
     //google login function
 
     const handleLoginUsingGoogle = ()=>{
+      setGoogleLoading(true)
         handleGoogleLogin()
         .then(result =>{
-          toast.success('User logged in successfully')
+          toast.success('logged in successfully')
           const user = result.user
           saveUserToDb(user.displayName, user.email )
-          console.log(user);
+          setGoogleLoading(false)
+          navigate(from , {replace : true})
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          setLoading(false)
+        })
     }
 
     const saveUserToDb = (name , email)=>{
       const user = {name , email , accountMode : 'buyer' , verified : false}
-      fetch(`${process.env.REACT_APP_url}/users/${email}`, {
+      fetch(`http://localhost:5000/users/${email}`, {
         method : 'PUT',
         headers : { 'Content-Type': 'application/json'},
         body: JSON.stringify(user)
@@ -83,7 +92,7 @@ const Login = () => {
             className="mt-3"
             alt=""
           />
-          <p className="text-center text-xl font-medium mt-2">
+          <p className="text-center text-lg font-medium mt-2">
             Enter your login details here
           </p>
           <form onSubmit={handleSubmit(handleUserSubmit)}>
@@ -102,14 +111,18 @@ const Login = () => {
               className="border-0 w-full outline-none bg-gray-300 px-3 py-3 mt-3 text-slate-900 placeholder-gray-500"
             />
             {errors.password && <span className="text-red-500">Please enter correct password</span>}     
-             <input type="submit" value="Login"  className="w-full bg-yellow-400 hover:bg-yellow-500 cursor-pointer py-3 mt-4 font-semibold text-xl"/>
+            {
+              loading ? <SmallSpinner/> :  <input type="submit" value="Login"  className="w-full bg-yellow-400 hover:bg-yellow-500 cursor-pointer py-3 mt-4 font-semibold text-lg rounded"/>
+            }
           </form>
           <p className="text-red-500 font-medium text-lg my-3">{errorMessage}</p>
           <div className="mt-4">
-             <p className="font-medium text-center">New User ? <Link to={'/register'} className="underline text-lg font-semibold"> Create a account!</Link></p>
+             <p className="font-medium text-center">New User ? <Link to={'/register'} className="underline text-base font-semibold"> Create a account!</Link></p>
              <div className="divider">OR</div>
              
-             <button onClick={handleLoginUsingGoogle} className='flex items-center justify-center bg-slate-600 hover:bg-slate-500 w-full py-3 text-white text-xl'><FcGoogle className='text-xl mr-2'></FcGoogle> Login using Google</button>
+             <button onClick={handleLoginUsingGoogle} className='flex rounded items-center justify-center bg-slate-600 hover:bg-slate-500 w-full py-3 text-white text-lg'>{
+              googleLoading ? <SmallSpinner/> : <><FcGoogle className='text-lg mr-2'></FcGoogle> Login using Google</>
+             }</button>
           </div>
         </div>
       </div>

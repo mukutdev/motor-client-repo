@@ -3,11 +3,17 @@ import { Link, Outlet } from "react-router-dom";
 import { AuthProvider } from "../../context/AuthConText";
 import { useAdmin } from "../../Hooks/useAdmin";
 import Header from "../Header/Header";
+import Loader from "../Loader/Loader";
 
 const DashboardLayout = () => {
   const { user } = useContext(AuthProvider);
-  const [userLevel] = useAdmin(user?.email);
-  // console.log(userLevel);
+  const [userLevel , isAdminLoading] = useAdmin(user?.email);
+
+
+  if(isAdminLoading){
+    return <Loader/>
+  }
+
 
   return (
     <div>
@@ -24,7 +30,7 @@ const DashboardLayout = () => {
               <>
                 <li>
                   <Link
-                    className="text-xl mx-2 rounded-lg font-medium  hover:bg-yellow-400 hover:text-white"
+                    className="text-lg mx-2 rounded-lg font-medium  hover:bg-yellow-400 hover:text-white"
                     to={"/dashboard/allsellers"}
                   >
                     All Sellers
@@ -32,7 +38,7 @@ const DashboardLayout = () => {
                 </li>
                 <li>
                   <Link
-                    className="text-xl mx-2 rounded-lg font-medium  hover:bg-yellow-400 hover:text-white"
+                    className="text-lg mx-2 rounded-lg font-medium  hover:bg-yellow-400 hover:text-white"
                     to={"/dashboard/allbuyers"}
                   >
                     All Buyers
@@ -40,7 +46,7 @@ const DashboardLayout = () => {
                 </li>
                 <li>
                   <Link
-                    className="text-xl mx-2 rounded-lg font-medium  hover:bg-yellow-400 hover:text-white"
+                    className="text-lg mx-2 rounded-lg font-medium  hover:bg-yellow-400 hover:text-white"
                     to={"/dashboard/report"}
                   >
                     Reported Order
@@ -51,10 +57,10 @@ const DashboardLayout = () => {
             {userLevel?.accountMode === "buyer" && (
               <li>
                 <Link
-                  className="text-xl mx-2 rounded-lg font-medium  hover:bg-yellow-400 hover:text-white"
+                  className="text-lg mx-2 rounded-lg font-medium  hover:bg-yellow-400 hover:text-white"
                   to={"/dashboard/myorders"}
                 >
-                  My Orders
+                  My Bookings
                 </Link>
               </li>
             )}
@@ -63,7 +69,7 @@ const DashboardLayout = () => {
               <>
                 <li>
                   <Link
-                    className="text-xl mx-2 rounded-lg font-medium  hover:bg-yellow-400 hover:text-white"
+                    className="text-lg mx-2 rounded-lg font-medium  hover:bg-yellow-400 hover:text-white"
                     to={"/dashboard/addproduct"}
                   >
                     Add Car
@@ -71,7 +77,7 @@ const DashboardLayout = () => {
                 </li>
                 <li>
                   <Link
-                    className="text-xl mx-2 rounded-lg font-medium  hover:bg-yellow-400 hover:text-white"
+                    className="text-lg mx-2 rounded-lg font-medium  hover:bg-yellow-400 hover:text-white"
                     to={"/dashboard/myproducts"}
                   >
                     My Products
